@@ -1,0 +1,64 @@
+<div>
+  <nav class="navbar navbar-light bg-primary justify-content-between">
+    <a class="navbrand badge">Weather Channel</a>
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched" [(ngModel)]="searchedInput"
+        #ctrl="ngModel">
+      <button class="btn btn-light my-2 my-sm-0" type="submit" (click)="search()">Search</button>
+    </form>
+  </nav>
+  <!-- <canvas #canvas id="canvas" width="400" height="400"></canvas> -->
+
+  <div class="row">
+    <div *ngIf="searchSuccess" class="card col-lg-4 weatherBox">
+      <div class="card-header">
+        {{data.name |titlecase}},{{data.sys.country |uppercase}}
+      </div>
+      <ul>
+        <li>{{data.dt*1000|date:'full'}}</li>
+        <li>
+          <img [src]="icon" he/>
+          <span>{{data.weather[0].description |titlecase}}</span>
+        </li>
+        <li><h2>{{data.main.temp}} &#8451;</h2></li>
+        <li>Humidity:
+          <span>{{data.main.humidity}}%</span>
+        </li>
+        <li>Min Temperature:
+          <span>{{data.main.temp_min}}</span> &#8451;</li>
+        <li>Max Temperature:
+          <span>{{data.main.temp_max}}</span> &#8451;</li>
+      </ul>
+    </div>
+    <div class="col-lg-6 card weatherBox" [hidden]="!searchSuccess">
+      <h4 class="card-header">Trend</h4>
+      <canvas #canvas id="canvas" width="100" height="50"></canvas>
+    </div>
+  </div>
+
+  <div *ngIf="searchSuccess">
+    <hr>
+    <h4>Next 6 days Forecast</h4>
+
+    <!-- <div class="flex-container">
+      <div *ngFor="let l of forecastdata" class="card">
+        <div class="card-header">{{l.dt*1000|date:'EEE'}}</div>
+        <div>{{l.weather[0].main}}</div>
+        <div>Min:
+          <span>{{l.temp.min}}</span> &#8451;</div>
+        <div>Max:
+          <span>{{l.temp.max}}</span> &#8451;</div>
+      </div>
+    </div> -->
+    <ul id="forecast" *ngFor="let l of forecastdata">
+      <li class="card col-xs-10">
+          <div class="card-header">{{l.dt*1000|date:'EEE'}}</div>
+          <div>{{l.weather[0].main}}</div>
+          <div>Min:<span>{{l.temp.min}}</span> &#8451;</div>
+          <div>Max:
+            <span>{{l.temp.max}}</span> &#8451;</div>
+      </li>
+    </ul>
+    
+
+    <router-outlet></router-outlet>
